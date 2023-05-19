@@ -29,6 +29,7 @@ inputField.attr("class", "input");
 var saveButton = $("<button>").attr("class", "saveBtn fa fa-save");
 //create cell for time
 var timeCell = $("<td>").attr("class", "hour");
+timeCell.addClass(moment(timeArray[i],'H').format('hA'));
 //set text of time cell to array[i]
 timeCell.text(moment(timeArray[i],'H').format('hA'));
 //create cell for input
@@ -79,9 +80,31 @@ $(".saveBtn").on("click", function(event) {
         confirm.text(`Appointment added to local storage ✔️`);
         container.prepend(confirm);
         }
-        
     }
 })
 // Persist events between refreshes of a page.
 
-console.log(container.children('div'));
+//store times in array
+var times = [];
+
+timeArray.forEach(function(currentTime) {
+    if(currentTime < 12) {
+        times.push(currentTime+"AM");
+    } else {
+        if(currentTime > 12) {
+            currentTime = currentTime - 12;
+        }
+            times.push(currentTime+"PM");
+
+    }
+})
+
+//function that adds the values stored in local storage into table dynamically
+for (let i = 0; i < times.length; i++) {
+    if(localStorage.getItem(times[i]) !== null) {
+        var className = "."+times[i];
+        var target = $(className);
+        // var target = $(.);
+        target.next().text(localStorage.getItem(times[i]));
+    }
+}
