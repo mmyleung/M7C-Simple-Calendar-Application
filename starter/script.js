@@ -32,9 +32,8 @@ var timeCell = $("<td>").attr("class", "hour");
 //set text of time cell to array[i]
 timeCell.text(moment(timeArray[i],'H').format('hA'));
 //create cell for input
+// Allow a user to enter an event when they click a timeblock.
 var inputCell = $("<td>").attr("contentEditable","true");
-//add input field into input cell
-// inputField.appendTo(inputCell);
 //create cell for save button
 var saveCell = $("<td>");
 //add button into save button cell
@@ -45,7 +44,8 @@ saveCell.appendTo(row);
 
 row.appendTo(tableBody);
 
-if(moment(timeArray[i],'H').isBetween(moment().subtract(1, 'h'), moment())){
+// Color-code each timeblock based on past, present, and future when the timeblock is viewed.
+if(moment(timeArray[i],'H').isBetween(moment().subtract(59, 'm'), moment())){
     inputCell.attr("class", "input present");
 } else if(moment(timeArray[i],'H').isBefore(moment())) {
     inputCell.attr("class", "input past");
@@ -53,18 +53,35 @@ if(moment(timeArray[i],'H').isBetween(moment().subtract(1, 'h'), moment())){
     inputCell.attr("class", "input future");
 }
 
-console.log(moment(timeArray[i],'H').isAfter(currentTime));
-
 }
 tableBody.appendTo(table);
 table.appendTo(container);
-// Color-code each timeblock based on past, present, and future when the timeblock is viewed.
-var currentTime = moment('9:00','H:mm');
-console.log(currentTime);
-// Allow a user to enter an event when they click a timeblock.
 
 // Save the event in local storage when the save button is clicked in that timeblock.
-
+$(".saveBtn").on("click", function(event) {
+    event.stopPropagation();
+    //target the input cell and obtain the value
+    var input = $(this).parent().prev().text();
+    //target the time for a key in local storage
+    var time = $(this).parent().prev().prev().text();
+    if(input !== "") {
+        if(container.children().length === 2) {
+            container.children().eq(0).remove();
+            localStorage.setItem(time, input);
+            //add a div to confirm information has been saved to local storage
+            var confirm = $("<div>").css("text-align","center").attr("class", "confirmation");
+            confirm.text(`Appointment added to local storage ✔️`);
+            container.prepend(confirm);
+        } else {
+        localStorage.setItem(time, input);
+        //add a div to confirm information has been saved to local storage
+        var confirm = $("<div>").css("text-align","center").attr("class", "confirmation");
+        confirm.text(`Appointment added to local storage ✔️`);
+        container.prepend(confirm);
+        }
+        
+    }
+})
 // Persist events between refreshes of a page.
 
-console.log(moment('9','H').format('h:mm A'));
+console.log(container.children('div'));
