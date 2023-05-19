@@ -25,21 +25,31 @@ textarea {
   white-space: pre-wrap;
 }
 
+.container {
+  margin: 15px;
+  padding: 0;
+  width: 100vw;
+}
 .time-block {
   text-align: center;
   border-radius: 15px;
+  margin: 0;
+  padding: 0;
 }
 
 .row {
   white-space: pre-wrap;
   height: 80px;
   border-top: 1px solid white;
+  width: 100%;
+  margin: 0; 
 }
 
 .hour {
   background-color: #ffffff;
   color: #000000;
-  border-top: 1px dashed #000000;
+  border-top: 1px dashed #000000 !important;
+  min-width: 10%;
 }
 
 .past {
@@ -63,9 +73,15 @@ textarea {
   border-bottom-right-radius: 15px;
   background-color: #06aed5;
   color: white;
+  min-width: 40%;
 }
 
 .saveBtn i:hover {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
+}
+
+.input {
+  min-width: 80%;
+  height: 100%;
 }
